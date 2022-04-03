@@ -2,13 +2,17 @@
   <v-container :class="['beer-list-view']">
     <v-row
       v-if="filteredList.length > 0 && beerListData.length > 0"
+      justify="center"
       :class="['my-6']"
     >
+      <v-col cols="12" :class="['d-flex', 'justify-center', 'paginated-class']">
+        <jw-pagination :items="beerListData" @changePage="onChangePage" />
+      </v-col>
       <v-col
         cols="12"
         sm="6"
-        md="4"
-        lg="3"
+        md="3"
+        lg="2"
         v-for="(beer, index) in filteredList"
         :key="index"
       >
@@ -52,7 +56,7 @@ export default {
       );
     },
     filteredList() {
-      return this.beerListData.filter((beer) =>
+      return this.beerListDataToUse.filter((beer) =>
         this.conditionEmptyValueSearchBeer
           ? beer.name.toLowerCase().includes(this.valueToSearch.toLowerCase())
           : beer
@@ -71,6 +75,32 @@ export default {
         return false;
       }
     },
+    onChangePage(paginatedList) {
+      this.beerListDataToUse = paginatedList;
+    },
+  },
+  data() {
+    return {
+      beerListDataToUse: [],
+    };
+  },
+  watch: {
+    beerListData: {
+      immediate: true,
+      handler(val) {
+        this.beerListDataToUse = val;
+      },
+    },
   },
 };
 </script>
+
+<style lang="scss">
+.beer-list-view {
+  .paginated-class {
+    a {
+      color: #030303;
+    }
+  }
+}
+</style>

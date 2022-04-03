@@ -1,6 +1,6 @@
 <template>
   <v-card elevation="3" :class="['beer-list-component']">
-    <v-responsive :aspect-ratio="9 / 15">
+    <v-responsive :aspect-ratio="cardRatio">
       <v-img
         gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
         aspect-ratio="1"
@@ -62,6 +62,18 @@ export default {
     ...mapGetters({
       cartList: "beer/getCartList",
     }),
+    cardRatio() {
+      switch (this.$vuetify.breakpoint.name) {
+        case "xs":
+          return 9 / 12;
+        case "sm":
+          return 9 / 15;
+        case "xl":
+          return 9 / 16;
+        default:
+          return 9 / 19;
+      }
+    },
     classTextOrdered() {
       if (this.cartIncludeBeer) {
         return "textOrdered";
