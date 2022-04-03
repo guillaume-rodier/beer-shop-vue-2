@@ -5,6 +5,9 @@ const getters = {
   getCartList(state) {
     return state.cartList;
   },
+  getValueToSearch(state) {
+    return state.searchBeer;
+  },
 };
 
 export default getters;

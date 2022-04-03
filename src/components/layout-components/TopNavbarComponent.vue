@@ -2,7 +2,7 @@
   <v-app-bar
     app
     color="primary"
-    elevation="24"
+    elevation="4"
     position="top"
     border="true"
     height="50"
@@ -15,7 +15,9 @@
       @click="$emit('open-sidebar', true)"
     ></v-app-bar-nav-icon>
 
-    <v-toolbar-title :class="['ml-4', 'white--text', 'font-weight-medium']">
+    <v-toolbar-title
+      :class="['white--text', 'font-weight-medium', classDesktop]"
+    >
       Beer shop
     </v-toolbar-title>
 
@@ -34,11 +36,25 @@
       </v-btn>
     </div>
 
-    <v-spacer></v-spacer>
+    <v-spacer v-if="$vuetify.breakpoint.mdAndUp"></v-spacer>
+
+    <v-text-field
+      v-model="search"
+      label="Search a beer"
+      solo
+      flat
+      dense
+      outlined
+      clearable
+      hide-details
+      @input="updateSearchBeerStore"
+    />
   </v-app-bar>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: "TopNavbarComponent",
   props: {
@@ -50,12 +66,26 @@ export default {
       },
     },
   },
+  computed: {
+    classDesktop() {
+      switch (true) {
+        case this.$vuetify.breakpoint.mdAndUp:
+          return "ml-4";
+        default:
+          return "pl-2 pr-3";
+      }
+    },
+  },
   data() {
     return {
       drawer: false,
+      search: "",
     };
   },
   methods: {
+    ...mapActions({
+      updateSearchBeer: "beer/updateSearchBeer",
+    }),
     redirection(routeName) {
       this.$emit("redirection", { name: routeName });
     },
@@ -63,6 +93,9 @@ export default {
       if (this.$route.name === route) {
         return "active-btn grey";
       }
+    },
+    updateSearchBeerStore() {
+      this.updateSearchBeer(this.search);
     },
   },
 };

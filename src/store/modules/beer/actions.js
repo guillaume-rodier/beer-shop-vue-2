@@ -14,6 +14,9 @@ const actions = {
   deleteBeerToCartList({ commit }, beer) {
     commit("DELETE_BEER_FROM_CART_LIST", beer);
   },
+  updateSearchBeer({ commit }, value) {
+    commit("SEARCH_BEER", value);
+  },
 };
 
 export default actions;
